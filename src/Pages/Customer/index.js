@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Divider } from '@mui/material';
 
+import { config } from '../../config';
 
 const Customer = () => {
   const navigate = useNavigate()
-
-  const token = localStorage.getItem("token") !== null ? localStorage.getItem('token') : null;
   const [data, setData] = useState([])
   const [attributeHeading, setAttributeHeading] = useState([])
   const [relationshipsHeading, setRelationshipsHeading] = useState([])
@@ -15,13 +14,6 @@ const Customer = () => {
   let urlData = []
   let de = useRef(false)
   const [detailsResponse, setDetailsResponse] = useState([])
-  const config = {
-    headers: {
-      'Content-Type': ' application/vnd.api+json',
-      'Accept': ' application/vnd.api+json',
-      'Authorization': `Bearer ${token}`,
-    }
-  };
 
   useEffect(() => {
     const getData = async () => {
@@ -50,7 +42,6 @@ const Customer = () => {
   const renderSelfTD = (selfData, key, index, mainIndex) => {
 
     const dataIndex = data?.length && data?.map((item, index) => index > 0 ? index * 14 : index)
-
     if (selfData?.relationships[key]?.links?.self) {
       const url = new URL(selfData?.relationships[key]?.links?.self);
       url.port = "82";
@@ -85,7 +76,6 @@ const Customer = () => {
     }
     return <TableCell>{detailsResponse[index + dataIndex[mainIndex]]?.data?.data?.id ? detailsResponse[index + dataIndex[mainIndex]]?.data?.data?.id : "-"}</TableCell>;
   }
-
 
   return (
     <>
